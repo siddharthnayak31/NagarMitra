@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagar Mitra - Citizen Portal</title>
+    <link rel="stylesheet" href="Homepg.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/i18next@21.9.1/dist/umd/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next-browser-languagedetector@6.1.5/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
+</head>
+<body style="background-color: #EBF9FF;">
+    
+    <!-- Permission Modal (existing content used as source) -->
+    <div class="modal permission-modal" id="permissionModal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3>Grant Permissions</h3>
+            </div>
+            <div class="modal__body">
+                <div class="permission-info">
+                    <p>Nagar Mitra needs the following permissions to provide better service:</p>
+                    <div class="permission-list">
+                        <div class="permission-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Location Access</strong>
+                                <p>To show nearby complaints and issues</p>
+                            </div>
+                        </div>
+                        <div class="permission-item">
+                            <i class="fas fa-camera"></i>
+                            <div>
+                                <strong>Camera Access</strong>
+                                <p>To capture images when filing complaints</p>
+                            </div>
+                        </div>
+                        <div class="permission-item">
+                            <i class="fas fa-microphone"></i>
+                            <div>
+                                <strong>Microphone Access</strong>
+                                <p>To record audio descriptions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="permission-actions">
+                    <button class="btn btn--secondary" id="denyPermissions">Deny</button>
+                    <button class="btn btn--primary" id="grantPermissions">Grant Permissions</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <button class="hamburger-menu" id="hamburgerMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <div class="header__logos">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/250px-Emblem_of_India.svg.png" alt="State Emblem of India" class="gov-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Swachh_Bharat_Mission_Logo.svg/375px-Swachh_Bharat_Mission_Logo.svg.png" alt="Swachh Bharat" class="gov-logo">
+            <img src="Nagar_Mitra_Logo.png" alt="Wikipedia" class="gov-logo"> 
+        </div>
+
+     <div class="header__branding"> <img class="brand-logo" src="Nagar_Mitra_Logo.png" alt="Logo"> 
+        <h1 class="brand-name" data-i18n="brandName">Nagar Mitra</h1> </div>
+
+        <div class="header__actions">
+            <button class="btn btn--language" id="languageBtn">
+                <i class="fas fa-globe"></i>
+                <span data-i18n="language">Language</span>
+            </button>
+            <button class="btn btn--login" id="loginBtn">
+                <i class="fas fa-user"></i>
+                <span data-i18n="login" onclick="RedirectToLoginPg()">Login/Signup</span>
+            </button>
+            <!-- Popover: Role choice under Login button -->
+            <!-- <div id="roleChoicePopover" class="role-popover hidden" role="menu" aria-labelledby="loginBtn">
+              <button id="adminLoginBtn" class="role-popover__item" role="menuitem">👨‍💼 Admin Login</button>
+              <button id="citizenLoginBtn" class="role-popover__item" role="menuitem">🧑 Citizen Login</button>
+            </div> -->
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar__header">
+            <h3 data-i18n="menu">Menu</h3>
+            <button class="sidebar__close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="sidebar__nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-key="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span data-i18n="notifications">Notifications/Updates 🔔</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-key="history">
+                        <i class="fas fa-history"></i>
+                        <span data-i18n="complaintHistory">Complaint History</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-key="helpline">
+                        <i class="fas fa-phone"></i>
+                        <span data-i18n="helplineNumbers">Helpline numbers</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-key="settings">
+                        <i class="fas fa-cog"></i>
+                        <span data-i18n="settings">Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-key="faqs">
+                        <i class="fas fa-question-circle"></i>
+                        <span data-i18n="faqs">FAQs</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-key="about">
+                        <i class="fas fa-info-circle"></i>
+                        <span data-i18n="aboutUs">About Us ℹ️</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Language Dropdown -->
+    <div class="language-dropdown hidden" id="languageDropdown">
+        <div class="language-search">
+            <input type="text" placeholder="Search languages..." id="languageSearch">
+        </div>
+        <div class="language-list" id="languageList"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Live Statistics -->
+        <section class="stats-section">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card stat-card--active">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-target="127">0</div>
+                            <div class="stat-label" data-i18n="activeComplaints">Total Active Complaints</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--resolved">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-target="342">0</div>
+                            <div class="stat-label" data-i18n="resolvedIssues">Total Resolved Issues</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--progress">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" data-target="89">0</div>
+                            <div class="stat-label" data-i18n="issuesInProgress">Issues in Progress</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner Section -->
+        <section class="banner-section">
+            <div class="container">
+                <div class="banner-slider" id="bannerSlider">
+                    <div class="banner-wrapper">
+                        <div class="banner-slide active" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <div class="banner-content">
+                                <h3>Report Civic Issues Instantly</h3>
+                                <p>Quick and easy complaint filing with photo and location</p>
+                            </div>
+                        </div>
+                        <div class="banner-slide" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <div class="banner-content">
+                                <h3>Track Your Complaints</h3>
+                                <p>Real-time status updates and government response</p>
+                            </div>
+                        </div>
+                        <div class="banner-slide" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <div class="banner-content">
+                                <h3>Community Voting System</h3>
+                                <p>Vote to prioritize urgent issues in your area</p>
+                            </div>
+                        </div>
+                        <div class="banner-slide" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                            <div class="banner-content">
+                                <h3>Direct Government Connection</h3>
+                                <p>Connect directly with municipal authorities</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="banner-indicators">
+                        <button class="indicator active" data-slide="0"></button>
+                        <button class="indicator" data-slide="1"></button>
+                        <button class="indicator" data-slide="2"></button>
+                        <button class="indicator" data-slide="3"></button>
+                    </div>
+                    <button class="banner-nav banner-nav--prev" id="prevBanner">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="banner-nav banner-nav--next" id="nextBanner">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search and Actions Section -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-wrapper">
+                    <div class="search-input-wrapper">
+                        <input type="text" class="search-input" placeholder="search with Complaint ID or Tracking ID" id="complaintSearch">
+                        <button class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="category-wrapper">
+                    <select class="category-dropdown" id="categoryFilter">
+                        <option value="All">All Categories</option>
+                        <option value="Potholes">Potholes</option>
+                        <option value="Electricity">Electricity</option>
+                        <option value="Garbage">Garbage</option>
+                        <option value="Water">Water</option>
+                        <option value="Sewer">Sewer</option>
+                    </select>
+                </div>
+
+                <div class="file-complaint-wrapper">
+                    <button class="file-complaint-btn" id="fileComplaintBtn">
+                        <i class="fas fa-plus-circle"></i>
+                        <span data-i18n="fileComplaint" >File Your Complaint</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Complaints Section -->
+        <section class="complaints-section">
+            <div class="container">
+                <h3 class="section-title" data-i18n="complaintsNearby">Complaints near you (1km radius)</h3>
+                
+                <div class="complaints-grid" id="complaintsGrid"></div>
+                
+                <div class="load-more-wrapper">
+                    <button class="btn btn--outline load-more-btn hidden" id="loadMoreBtn">
+                        <span data-i18n="showMoreComplaints">Show More Complaints</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Map Section -->
+        <section class="map-section">
+            <div class="container">
+                <h3 class="section-title" data-i18n="areaMap">Area Map (1.5km radius)</h3>
+                <div class="map-container">
+                    <div class="map-legend">
+                        <div class="legend-item"><span class="legend-pin" style="background: black;"></span><span>Potholes</span></div>
+                        <div class="legend-item"><span class="legend-pin" style="background: yellow;"></span><span>Electricity</span></div>
+                        <div class="legend-item"><span class="legend-pin" style="background: skyblue;"></span><span>Water</span></div>
+                        <div class="legend-item"><span class="legend-pin" style="background: green;"></span><span>Sewer</span></div>
+                        <div class="legend-item"><span class="legend-pin" style="background: brown;"></span><span>Garbage</span></div>
+                    </div>
+                    <img src="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/35c6d42b-3661-47ea-85c9-152cda9a5eb3.png" alt="Interactive city map with colored complaint markers" class="map-image">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4 data-i18n="contactInfo">Contact Information</h4>
+                    <div class="footer-content">
+                        <p>Nagar Mitra Headquarters<br>Government Complex, New Delhi - 110001</p>
+                        <p>Regional Office<br>Municipal Corporation Building, Mumbai - 400001</p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="helplineNumbers">Helpline Numbers</h4>
+                    <div class="footer-content">
+                        <p><strong>Emergency:</strong> 100</p>
+                        <p><strong>Civic Issues:</strong> 1950</p>
+                        <p><strong>Customer Support:</strong> 1800-xxx-xxxx</p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="officialLinks">Official Links</h4>
+                    <div class="footer-content">
+                        <a href="#" target="_blank">Ministry of Urban Development</a>
+                        <a href="#" target="_blank">Smart Cities Mission</a>
+                        <a href="#" target="_blank">Digital India</a>
+                        <a href="#" target="_blank">MyGov Portal</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="followUs">Follow Us</h4>
+                    <div class="footer-content">
+                        <div class="social-links">
+                            <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-legal">
+                    <p>&copy; 2024 Nagar Mitra. All rights reserved. | <a href="#" data-i18n="privacyPolicy">Privacy Policy</a> | <a href="#" data-i18n="termsOfService">Terms of Service</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Complaint Detail Modal -->
+    <div class="modal complaint-modal hidden" id="complaintModal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 id="modalTitle">Complaint Details</h3>
+                <button class="modal__close" id="modalClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal__body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Role Choice Modal (unchanged) -->
+    <!-- <div id="roleChoiceModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="role-choice-title">
+      <div class="modal__backdrop" tabindex="-1" aria-hidden="true"></div>
+      <div class="modal__content" style="max-width: 420px">
+        <div class="modal__header"><h3 id="role-choice-title">Continue as</h3></div>
+        <div class="modal__body">
+          <p style="color: var(--color-text-secondary, #626c71); font-size: 14px; margin-bottom: 12px;">Choose a role to proceed to login.</p>
+          <div class="modal-actions" style="display: grid; gap: 12px;">
+            <button id="adminLoginBtn" class="btn btn--primary">👨‍💼 Admin Login</button>
+            <button id="citizenLoginBtn" class="btn btn--secondary">🧑 Citizen Login</button>
+            <button id="closeRoleChoiceModal" class="btn btn--outline">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <script>
+    function RedirectToLoginPg() {
+      // Redirect user to Login page
+      window.location.href = "login.html";
+    }
+  </script>   
+    <script src="Homepg.js"></script>
+</body>
+</html>

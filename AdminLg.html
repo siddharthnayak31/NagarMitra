@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagar Mitra - Admin Login</title>
+    <link rel="stylesheet" href="AdminLg.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header with Government Logos -->
+    <header class="header">
+        <div class="header__logos">
+            <div class="gov-logo">
+                <!-- <i class="fas fa-flag-usa" title="Swachh Bharat"></i> -->
+                
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/250px-Emblem_of_India.svg.png" alt="State Emblem of India" class="gov-logo">
+            </div>
+            <div class="gov-logo">
+                <!-- <i class="fas fa-shield-alt" title="State Emblem of India"></i> -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Swachh_Bharat_Mission_Logo.svg/375px-Swachh_Bharat_Mission_Logo.svg.png" alt="Swachh Bharat" class="gov-logo">
+
+            </div>
+            <div class="gov-logo nagar-logo">
+                <!-- <i class="fas fa-city"></i> -->
+                <img src="Nagar_Mitra_Logo.png" alt="Wikipedia" class="gov-logo"> 
+
+            </div>
+        </div>
+        <div class="header__branding">
+            <h1 class="brand-name">Nagar Mitra</h1>
+            <p class="brand-subtitle">Smart City Administration Portal</p>
+        </div>
+
+        <div class="header__actions">
+            <button  class="btn btn--Dptadmin" id="DptadminLoginBtn" onclick="RedirectToDptAdminLg()" style="background-color: #b4530926;">
+                    <i class="fas fa-user-shield"></i>
+                    <span style="color: #32b8c6;">Department admin Login</span>
+                </button>
+        </div>
+    </header>
+
+    <!-- Main Login Container -->
+    <main class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h2>Admin Login</h2>
+                <p>Enter your credentials to access the admin dashboard</p>
+            </div>
+
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="userId" class="form-label">User ID</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user input-icon"></i>
+                        <input 
+                            type="text" 
+                            id="userId" 
+                            name="userId" 
+                            class="form-control" 
+                            placeholder="Enter your User ID"
+                            required
+                            autocomplete="username"
+                            autofocus
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-control" 
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <button type="button" class="password-toggle" id="passwordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn--primary btn--full-width login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login to Dashboard</span>
+                    <div class="login-spinner hidden">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <p class="help-text">
+                    <i class="fas fa-info-circle"></i>
+                    Having trouble logging in? Contact your system administrator
+                </p>
+                <div class="keyboard-shortcuts">
+                    <span class="shortcut-hint">
+                        <kbd>Tab</kbd> Navigate • <kbd>Enter</kbd> Submit • <kbd>Ctrl+L</kbd> Focus User ID
+                    </span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Verification Modal -->
+    <div class="modal hidden" id="successModal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Verification Successful</h3>
+            </div>
+            <div class="modal__body">
+                <p>Your login credentials have been verified successfully. Please complete the human verification to proceed to the admin dashboard.</p>
+                <div class="verification-info">
+                    <div class="info-item">
+                        <i class="fas fa-user"></i>
+                        <span id="verifiedUserId"></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <span id="loginTime"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn--primary btn--full-width" id="proceedToVerification">
+                    <i class="fas fa-shield-alt"></i>
+                    Continue to Human Verification
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Human Verification Modal -->
+    <div class="modal hidden" id="verificationModal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <div class="verification-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Human Verification Required</h3>
+            </div>
+            <div class="modal__body">
+                <p>For security purposes, please complete the human verification step.</p>
+                
+                <!-- Simulated Captcha -->
+                <div class="captcha-container">
+                    <div class="captcha-box">
+                        <div class="captcha-challenge">
+                            <p>I'm not a robot</p>
+                            <div class="captcha-checkbox" id="captchaCheckbox">
+                                <i class="fas fa-check hidden"></i>
+                            </div>
+                        </div>
+                        <div class="captcha-logo">
+                            <span>reCAPTCHA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="verification-progress hidden" id="verificationProgress">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p>Verifying your identity...</p>
+                </div>
+
+                <div class="verification-success hidden" id="verificationSuccess">
+                    <div class="success-checkmark">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <p>Human verification completed successfully!</p>
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn--outline" id="cancelVerification">Cancel</button>
+                <button class="btn btn--primary" id="completeLogin" disabled onclick="RedirectToAdminDsh()">
+                    <i class="fas fa-arrow-right"></i>
+                    Access Admin Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal hidden" id="errorModal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content error-modal">
+            <div class="modal__header">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>Invalid Login Credentials</h3>
+            </div>
+            <div class="modal__body">
+                <p>The User ID or password you entered is incorrect. Please check your credentials and try again.</p>
+                <div class="error-details">
+                    <div class="security-info">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>For security reasons, multiple failed attempts may temporarily lock your account.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn--primary btn--full-width" id="retryLogin">
+                    <i class="fas fa-redo"></i>
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <h3>Connecting to Admin Portal</h3>
+            <p>Please wait while we redirect you to the dashboard...</p>
+        </div>
+    </div>
+    <script>
+    function RedirectToDptAdminLg() {
+      // Redirect user to home page
+      window.location.href = "DptAdminLogin.html";
+    }
+  </script>
+    <script>
+    function RedirectToAdminDsh() {
+      // Redirect user to home page
+      window.location.href = "adminD.html";
+    }
+  </script>
+    <script src="AdminLg.js"></script>
+</body>
+</html>

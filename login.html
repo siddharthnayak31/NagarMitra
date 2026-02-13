@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagar Mitra - Login/Signup</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background-image: url(LoginPgImg_reduced_opacity.png);">
+    <!-- Header -->
+    <header class="header">
+        <div class="header__content">
+            <div class="header__logos">
+                <div class="gov-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/250px-Emblem_of_India.svg.png" alt="State Emblem of India">
+                </div>
+                <div class="gov-logo">
+                    <img src="Swachh_Bharat_Mission_Logo.png" alt="Swachha bharat logo">
+                </div>
+                <div class="gov-logo">
+                    <img src="Nagar_Mitra_Logo.png" alt="Nagar Mitra logo">
+                </div>
+                <div class="brand-section">
+                    <h1 class="brand-name">Nagar Mitra</h1>
+                    <p class="brand-subtitle">Your Digital Civic Partner</p>
+                </div>
+            </div>
+            
+            <div class="header__actions">
+                <button class="btn btn--language" id="languageBtn">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                </button>
+                <button class="btn btn--admin" id="adminLoginBtn" onclick="RedirectToAdminLg()">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin Login</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <div class="container">
+            <!-- Login/Signup Form -->
+            <div class="auth-container" id="authContainer">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <div class="auth-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h2>Welcome to Nagar Mitra</h2>
+                        <p>Enter your mobile number to get started</p>
+                    </div>
+
+                    <!-- Phone Input Step -->
+                    <form class="auth-form" id="phoneForm">
+                        <div class="form-group">
+                            <label for="phoneNumber" class="form-label">Mobile Number</label>
+                            <div class="phone-input-group">
+                                <span class="country-code">+91</span>
+                                <input 
+                                    type="tel" 
+                                    id="phoneNumber" 
+                                    name="phoneNumber" 
+                                    class="form-control phone-input" 
+                                    placeholder="Enter your mobile number here"
+                                    maxlength="10"
+                                    pattern="[6-9][0-9]{9}"
+                                    required>
+                            </div>
+                            <div class="error-message hidden" id="phoneError"></div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn--primary btn--full-width" id="sendOtpBtn">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Send OTP</span>
+                            <div class="btn-loading hidden">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                        </button>
+                    </form>
+
+                    <!-- OTP Verification Step -->
+                    <form class="auth-form hidden" id="otpForm">
+                        <div class="form-group">
+                            <label for="otpInput" class="form-label">Enter OTP</label>
+                            <p class="otp-info">We've sent a 6-digit code to <strong id="phoneDisplay"></strong></p>
+                            <div class="otp-input-group">
+                                <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]">
+                                <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]">
+                                <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]">
+                                <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]">
+                                <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]">
+                                <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]">
+                            </div>
+                            <div class="error-message hidden" id="otpError"></div>
+                            
+                            <div class="otp-timer">
+                                <span class="timer-text">Code expires in: <strong id="timerDisplay">05:00</strong></span>
+                            </div>
+                            
+                            <div class="resend-section">
+                                <p>Didn't receive the code?</p>
+                                <button type="button" class="btn-link" id="resendOtpBtn" disabled>
+                                    <i class="fas fa-redo"></i>
+                                    Resend OTP (<span id="resendTimer">60</span>s)
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn--primary btn--full-width" id="verifyOtpBtn" > <!-- onclick="RedirectTohomePg()" -->
+                            <i class="fas fa-shield-check"></i>
+                            <span>Verify OTP</span>
+                            <div class="btn-loading hidden">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                        </button>
+                        
+                        <button type="button" class="btn btn--outline btn--full-width" id="changeNumberBtn">
+                            <i class="fas fa-edit"></i>
+                            Change Number
+                        </button>
+                    </form>
+
+                    <!-- Human Verification Step -->
+                    <div class="human-verification hidden" id="humanVerification" >
+                        <div class="verification-header">
+                            <div class="verification-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <h3>Verifying Your Identity</h3>
+                            <p>Please wait while we verify your identity...</p>
+                        </div>
+                        
+                        <div class="verification-progress">
+                            <div class="verification-steps">
+                                <div class="verification-step" data-step="ip">
+                                    <i class="fas fa-network-wired"></i>
+                                    <span>IP Analysis</span>
+                                    <div class="step-status"><i class="fas fa-spinner fa-spin"></i></div>
+                                </div>
+                                <div class="verification-step" data-step="device">
+                                    <i class="fas fa-fingerprint"></i>
+                                    <span>Device Fingerprint</span>
+                                    <div class="step-status"><i class="fas fa-spinner fa-spin"></i></div>
+                                </div>
+                                <div class="verification-step" data-step="behavior">
+                                    <i class="fas fa-brain"></i>
+                                    <span>Behavioral Analysis</span>
+                                    <div class="step-status"><i class="fas fa-spinner fa-spin"></i></div>
+                                </div>
+                                <div class="verification-step" data-step="location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Geolocation Check</span>
+                                    <div class="step-status"><i class="fas fa-spinner fa-spin"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Features -->
+                <div class="security-info">
+                    <div class="security-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>256-bit SSL Encryption</span>
+                    </div>
+                    <div class="security-item">
+                        <i class="fas fa-lock"></i>
+                        <span>Secure OTP Delivery</span>
+                    </div>
+                    <div class="security-item">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Identity Protection</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Government Info Section -->
+            <div class="gov-info">
+                <div class="gov-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="50000">0</div>
+                        <div class="stat-label">Registered Citizens</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="12500">0</div>
+                        <div class="stat-label">Complaints Resolved</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="850">0</div>
+                        <div class="stat-label">Active Cases</div>
+                    </div>
+                </div>
+                
+                <div class="gov-features">
+                    <h3>Digital India Initiative</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>Mobile-First Design</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-language"></i>
+                            <span>Multi-Language Support</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-clock"></i>
+                            <span>24/7 Availability</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Real-Time Tracking</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin Login Modal -->
+    <div class="modal hidden" id="adminModal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <div class="admin-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3>Admin Login</h3>
+                <button class="modal__close" id="closeAdminModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <form class="admin-form" id="adminForm">
+                    <div class="form-group">
+                        <label for="adminUsername" class="form-label">Username</label>
+                        <input 
+                            type="text" 
+                            id="adminUsername" 
+                            name="username" 
+                            class="form-control"
+                            placeholder="Enter admin username"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword" class="form-label">Password</label>
+                        <div class="password-input-group">
+                            <input 
+                                type="password" 
+                                id="adminPassword" 
+                                name="password" 
+                                class="form-control"
+                                placeholder="Enter admin password"
+                                required>
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="error-message hidden" id="adminError"></div>
+                    
+                    <button type="submit" class="btn btn--primary btn--full-width" id="adminLoginSubmit">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                        <div class="btn-loading hidden">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal hidden" id="successModal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3 id="successTitle">Login Successful!</h3>
+            </div>
+            <div class="modal__body">
+                <div class="success-animation">
+                    <div class="checkmark">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                <p id="successMessage">Welcome to Nagar Mitra! Redirecting to your dashboard...</p>
+                <div class="redirect-info">
+                    <div class="redirect-timer">
+                        <i class="fas fa-clock"></i>
+                        Redirecting in <span id="redirectTimer">3</span> seconds
+                    </div>
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn--primary btn--full-width" id="continueBtn">
+                    <i class="fas fa-arrow-right"></i>
+                    Continue Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        <div class="loading-text">Processing...</div>
+    </div>
+
+
+    <!-- <script>
+    function RedirectTohomePg() {
+      // Redirect user to home page
+      window.location.href = "home.html";
+    }
+  </script> -->
+  
+    <script>
+    function RedirectToAdminLg() {
+      // Redirect user to admin login page
+      window.location.href = "AdminLg.html";
+    }
+  </script>
+    <script src="login.js"></script>
+</body>
+</html>

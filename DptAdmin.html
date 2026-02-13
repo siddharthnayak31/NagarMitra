@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Admin - Nagar Mitra</title>
+    <link rel="stylesheet" href="DptAdmin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="header-container">
+            <button class="hamburger-menu" id="hamburgerMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="header-emblems">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/250px-Emblem_of_India.svg.png" alt="Government of India" class="emblem">
+                <img src="Swachh_Bharat_Mission_Logo.png" alt="Swachh Bharat Mission" class="Chashma">
+                <img src="Nagar_Mitra_Logo.png" alt="Nagar Mitra Logo" class="BrandLg">
+            </div>
+            
+            <div class="header-title">
+                <h1>Nagar Mitra</h1>
+                <span class="admin-badge">Department Admin</span>
+            </div>
+            
+            <div class="department-selector">
+                <select id="departmentSelect" class="form-control">
+                    <option value="ELEC">Electricity Department</option>
+                    <option value="WATER">Water Department</option>
+                    <option value="SEWER">Sewer Department</option>
+                    <option value="ROADS">Roads & Infrastructure</option>
+                    <option value="SANIT">Sanitation Department</option>
+                    <option value="PWD">Public Works Department</option>
+                </select>
+            </div>
+            
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span onclick="RedirectToLOGIN()">Logout</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <div class="sidebar-menu">
+                <a href="#" class="menu-item active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Department Dashboard</span>
+                </a>
+                <a href="#" class="menu-item" data-section="complaints">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Assigned Complaints</span>
+                </a>
+                <a href="#" class="menu-item" data-section="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Work Schedule</span>
+                </a>
+                <a href="#" class="menu-item" data-section="performance">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Performance Reports</span>
+                </a>
+                <a href="#" class="menu-item" data-section="resources">
+                    <i class="fas fa-tools"></i>
+                    <span>Resource Management</span>
+                </a>
+                <a href="#" class="menu-item" data-section="communication">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>Communication Hub</span>
+                </a>
+                <a href="#" class="menu-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Department Stats Counter -->
+        <section class="counter-section">
+            <div class="counter-cards">
+                <div class="counter-card">
+                    <div class="counter-icon">
+                        <i class="fas fa-inbox"></i>
+                    </div>
+                    <div class="counter-info">
+                        <h3 id="assignedComplaints">47</h3>
+                        <p>Assigned Complaints</p>
+                    </div>
+                </div>
+                
+                <div class="counter-card">
+                    <div class="counter-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="counter-info">
+                        <h3 id="inProgressComplaints">23</h3>
+                        <p>In Progress</p>
+                    </div>
+                </div>
+                
+                <div class="counter-card">
+                    <div class="counter-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="counter-info">
+                        <h3 id="completedToday">12</h3>
+                        <p>Completed Today</p>
+                    </div>
+                </div>
+                
+                <div class="counter-card">
+                    <div class="counter-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="counter-info">
+                        <h3 id="escalatedComplaints">3</h3>
+                        <p>Escalated</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Complaints Management Section -->
+        <section class="complaints-management-section">
+            <div class="section-header">
+                <h2 style="color: black;">Complaint Management</h2>
+                <div class="filter-controls">
+                    <select id="statusFilter" class="form-control">
+                        <option value="">All Status</option>
+                        <option value="New">New</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="ESCALATED">Escalated</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                    <select id="priorityFilter" class="form-control">
+                        <option value="">All Priority</option>
+                        <option value="Urgent">Urgent</option>
+                        <option value="Normal">Normal</option>
+                     <!--   <option value="Low">Low</option>  -->
+                    </select>
+                    <button class="btn btn--outline btn--sm" id="exportBtn">
+                        <i class="fas fa-download"></i>
+                        Export
+                    </button>
+                </div>
+            </div>
+            
+            <div class="complaints-grid" id="complaintsGrid">
+                <!-- Complaint cards will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <!-- Performance Analytics -->
+        <section class="performance-section">
+            <div class="performance-grid">
+                <!-- Timeline Performance Chart -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <h3>Timeline Performance</h3>
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 250px;">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Daily Progress Chart -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <h3>Daily Progress</h3>
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 250px;">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Timeline Status Overview -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <h3>Timeline Status</h3>
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <div class="timeline-stats">
+                        <div class="timeline-stat">
+                            <div class="stat-indicator green"></div>
+                            <div class="stat-info">
+                                <span class="stat-number" id="onTimeCount">18</span>
+                                <span class="stat-label">On Time</span>
+                            </div>
+                        </div>
+                        <div class="timeline-stat">
+                            <div class="stat-indicator yellow"></div>
+                            <div class="stat-info">
+                                <span class="stat-number" id="warningCount">5</span>
+                                <span class="stat-label">Warning</span>
+                            </div>
+                        </div>
+                        <div class="timeline-stat">
+                            <div class="stat-indicator red"></div>
+                            <div class="stat-info">
+                                <span class="stat-number" id="criticalCount">2</span>
+                                <span class="stat-label">Critical</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource Status */
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <h3>Resource Management</h3>
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="resource-list">
+                        <div class="resource-item">
+                            <span class="resource-name">Available Staff</span>
+                            <span class="resource-value" id="availableStaff">8/12</span>
+                        </div>
+                        <div class="resource-item">
+                            <span class="resource-name">Equipment Status</span>
+                            <span class="resource-value status--success" id="equipmentStatus">Good</span>
+                        </div>
+                        <div class="resource-item">
+                            <span class="resource-name">Budget Utilized</span>
+                            <span class="resource-value" id="budgetUtilized">65%</span>
+                        </div>
+                        <div class="resource-item">
+                            <span class="resource-name">Avg. Response Time</span>
+                            <span class="resource-value" id="avgResponseTime">2.3 hrs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!- Quick Actions -->
+        <section class="quick-actions">
+            <h2>Quick Actions</h2>
+            <div class="actions-grid">
+                <button class="action-btn" id="bulkUpdateBtn">
+                    <i class="fas fa-tasks"></i>
+                    <span>Bulk Update Status</span>
+                </button>
+                <button class="action-btn" id="scheduleWorkBtn">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Schedule Work</span>
+                </button>
+                <button class="action-btn" id="requestResourcesBtn">
+                    <i class="fas fa-truck"></i>
+                    <span>Request Resources</span>
+                </button>
+                <button class="action-btn" id="generateReportBtn">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Generate Report</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Complaint Action Modal -->
+    <div class="modal hidden" id="complaintActionModal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 id="modalTitle">Complaint Action</h3>
+                <button class="modal__close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body" id="modalBody">
+                <!-- Content will be dynamically populated -->
+            </div>
+            <div class="modal__footer" id="modalFooter">
+                <!-- Footer buttons will be dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline Warning Modal -->
+    <div class="modal hidden" id="timelineWarningModal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3>Timeline Alert</h3>
+                <button class="modal__close" id="closeTimelineModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body" id="timelineModalBody">
+                <!-- Timeline warning content -->
+            </div>
+            <div class="modal__footer" id="timelineModalFooter">
+                <!-- Footer buttons -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast hidden" id="toast">
+        <div class="toast-content">
+            <i class="toast-icon"></i>
+            <span class="toast-message"></span>
+        </div>
+        <button class="toast-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <script>
+    function RedirectToLOGIN() {
+      // Redirect user to home page
+      window.location.href = "login.html";
+    }
+  </script>
+    <script src="DptAdmin.js"></script>
+</body>
+</html>
