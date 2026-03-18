@@ -10,6 +10,10 @@ SIH 2025 project. //
 [![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 **AI-Powered Crowdsourced Civic Issue Reporting & Resolution Platform**
+Nagar Mitra solves the core challenges local governments face in identifying, prioritizing, and resolving everyday civic issues like potholes, broken streetlights, garbage overflow, and drainage problems.
+
+Key Problems Addressed
+Existing systems are hard to use, lack real-time tracking, and suffer from poor responsiveness, leading to delays, low citizen trust, and inefficient resource allocation.
 
 Transforming urban governance through citizen empowerment and smart technology.
 
@@ -55,4 +59,18 @@ cp .env.example .env
 # Edit .env with your database credentials
 
 # Start the development server
+
 npm run dev
+nagar-mitra/
+├── /client/           # React frontend
+│   ├── /src/
+│   │   ├── /components/
+│   │   ├── /pages/
+│   │   └── /hooks/
+├── /server/           # Node.js backend
+│   ├── /routes/
+│   ├── /models/
+│   └── /middleware/
+├── /ai-models/        # ML classification models
+├── /docker/           # Docker configurations
+└── README.md
