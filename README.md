@@ -45,22 +45,7 @@ Transforming urban governance through citizen empowerment and smart technology.
 - PostgreSQL 14+
 - Docker (optional)
 
-### Installation
-```bash
-# Clone the repository
-git clone https://github.com/tech-hawks/nagar-mitra.git
-cd nagar-mitra
 
-# Install dependencies
-npm install
-
-# Setup environment variables
-cp .env.example .env
-# Edit .env with your database credentials
-
-# Start the development server
-
-npm run dev
 nagar-mitra/
 ├── /client/           # React frontend
 │   ├── /src/
